@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.Random;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class Server extends JFrame{
 		add(userText,BorderLayout.NORTH);
 		chatWindow = new JTextArea();
 		add(new JScrollPane(chatWindow));
-		setSize(300,150);
+		setSize(500,300);
 		setVisible(true);
 	}
 
