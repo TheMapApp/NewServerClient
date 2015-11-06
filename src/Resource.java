@@ -31,7 +31,7 @@ public int Sheep;
 			}
 		}
 		*/
-	
+
 	public static void shuffleArray(int[] ar){
 	    // If running on Java 6 or older, use `new Random()` on RHS here
 	    Random rnd = ThreadLocalRandom.current();
