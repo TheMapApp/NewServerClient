@@ -1,9 +1,12 @@
 import java.io.*;
+
 import java.net.*;
 import java.util.Random;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import java.lang.*;
 
 
 public class Server extends JFrame{
@@ -15,6 +18,11 @@ public class Server extends JFrame{
 	
 	private ServerSocket server;
 	private Socket connection;
+	
+	public int[] playerColor = new int [4];
+	public int[] playerColorCounter = new int [1];
+	
+	
 	
 	//Constructor
 	public Server(){
@@ -58,13 +66,21 @@ public class Server extends JFrame{
 			ioException.printStackTrace();
 		}
 	}
-	
-	//Wait for connection,
+		//Wait for connection,
 	
 	private void waitForConnection() throws IOException{
+		playerColorCounter[0] = 1;
+		
 		showMessage("\n Waiting for someone to connect");
 		connection = server.accept();
 		showMessage("\n Now connected to" + connection.getInetAddress().getHostName());
+		
+		//playerConnect();
+				
+		System.out.println(playerColor);
+		output.writeObject("\n You're now player"+ playerColor);
+		playerColorCounter[0] = playerColorCounter[0] + 1;
+		
 		
 	}
 	
@@ -149,4 +165,10 @@ public class Server extends JFrame{
 			}
 		);		
 	}
+	public void playerConnect(){
+		
+		int i;
+		i = 0;
+		playerColor[i]= playerColor[i+1];
+}
 }
