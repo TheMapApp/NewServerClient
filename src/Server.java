@@ -8,7 +8,6 @@ import javax.swing.*;
 
 import java.lang.*;
 
-
 public class Server extends JFrame{
 	
 	private JTextField userText;
@@ -20,13 +19,13 @@ public class Server extends JFrame{
 	private Socket connection;
 	
 	public int[] playerColor = new int [4];
-	public int[] playerColorCounter = new int [1];
+	public int playerColorCounter = 0;
 	
 	
 	
 	//Constructor
 	public Server(){
-		super("Nico Ladsen");
+		super("Server Test");
 		userText = new JTextField();
 		userText.setEditable(false);
 		userText.addActionListener(
@@ -68,23 +67,25 @@ public class Server extends JFrame{
 	}
 		//Wait for connection,
 	
-	private void waitForConnection() throws IOException{
-		playerColorCounter[0] = 1;
-		
+	public void waitForConnection() throws IOException{		
 		showMessage("\n Waiting for someone to connect");
 		connection = server.accept();
 		showMessage("\n Now connected to" + connection.getInetAddress().getHostName());
 		
 		//playerConnect();
-				
-		System.out.println(playerColor);
-		output.writeObject("\n You're now player"+ playerColor);
-		playerColorCounter[0] = playerColorCounter[0] + 1;
-		
-		
-	}
+		}
 	
 	//Get stream to send and receive data
+	
+		private void givePlayerColor() throws IOException	{
+			for (waitForConnection(){
+				playerColorCounter = 1;
+				System.out.println(playerColorCounter);
+				output.writeObject("\n You're now player"+ playerColor);
+				playerColorCounter = playerColorCounter + 1;
+				System.out.println("You now have color:"+playerColorCounter);
+			}
+		}
 	
 	private void setupStreams() throws IOException{
 		output = new ObjectOutputStream(connection.getOutputStream());

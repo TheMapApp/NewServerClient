@@ -27,7 +27,6 @@ public class ServerTest {
 		 Random rnd = ThreadLocalRandom.current();
 		    for (int i = resourceType.length - 1; i > 0; i--)
 		    {
-		    	
 		      int index = rnd.nextInt(i + 1);
 		      // Simple swap
 		      int a = resourceType[index];
@@ -42,14 +41,14 @@ public class ServerTest {
 	    for (int j = 0; j < resourceType.length; j++) {
 	      System.out.print(resourceType[j] + " ");
 	    }
-	    System.out.println();
+	    System.out.println("Gobbledygook");
 	
 	    shuffleArray(resourceNumber);
-    for (int j = 0; j < resourceNumber.length; j++) {
-      System.out.print(resourceNumber[j] + " ");
-    }
-    System.out.println();
-	
+	    for (int j = 0; j < resourceNumber.length; j++) {
+	    	System.out.print(resourceNumber[j] + " ");
+	    }
+	    
+	    System.out.println("Yes it works!");
 		}
 	}
 
