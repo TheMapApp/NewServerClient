@@ -23,10 +23,6 @@ public class ServerTest {
 		System.out.println();
 		}
 
-
-	Jeg har set en rigtig negermand og han var så sort i hovedet som en kullespand
-
-
 	public static void shuffleArray(int[] resourceType) {
 		 Random rnd = ThreadLocalRandom.current();
 		    for (int i = resourceType.length - 1; i > 0; i--)
