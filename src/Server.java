@@ -78,13 +78,13 @@ public class Server extends JFrame{
 	//Get stream to send and receive data
 	
 		private void givePlayerColor() throws IOException	{
-			for (waitForConnection(){
-				playerColorCounter = 1;
-				System.out.println(playerColorCounter);
+			for (waitForConnection();
+				playerColorCounter == 1;
+				System.out.println(playerColorCounter));
 				output.writeObject("\n You're now player"+ playerColor);
 				playerColorCounter = playerColorCounter + 1;
 				System.out.println("You now have color:"+playerColorCounter);
-			}
+
 		}
 	
 	private void setupStreams() throws IOException{
