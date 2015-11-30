@@ -25,7 +25,7 @@ public class ServerProgram extends Listener{
 
         server.addListener(new ServerProgram());
 
-        System.out.println("System is operational!")
+        System.out.println("Server is operational!");
     }
 
 
