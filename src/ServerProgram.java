@@ -35,30 +35,38 @@ public class ServerProgram extends Listener{
         PacketMessage packetMessage = new PacketMessage();
         packetMessage.message = "Hello mate! The time is: " + new Date().toString();
         c.sendTCP(packetMessage);
+        PacketMessage colour = new PacketMessage();
 
         for (int i = 0; i <= c.getID(); i++) {
             if (colorCode == 0) {
                 c.getID();
                 System.out.println("Blue is applied to " + c.getID());
+                colour.message = "Hi there, blue!";
+                c.sendTCP(colour);
                 colorCode += 1;
             } else if (colorCode == 1) {
                 c.getID();
                 System.out.println("Green is applied to " + c.getID());
+                colour.message = "Hi there, green!";
+                c.sendTCP(colour);
                 colorCode += 1;
             } else if (colorCode == 2) {
                 c.getID();
                 System.out.println("Red is applied to " + c.getID());
+                colour.message = "Hi there, red!";
+                c.sendTCP(colour);
                 colorCode += 1;
             } else if (colorCode == 3) {
                 c.getID();
-                System.out.println("Schwarz is applied to " + c.getID());
+                System.out.println("Black is applied to " + c.getID());
+                colour.message = "Hi there, black!";
+                c.sendTCP(colour);
                 colorCode += 1;
             }
         }
     }
 
     public void received(Connection c, Object p) {
-
     }
 
     public void disconnected(Connection c)  {
