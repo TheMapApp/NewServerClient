@@ -9,7 +9,7 @@ import com.sun.xml.internal.ws.api.message.Packet;
 public class ClientProgram extends Listener {
 
     static Client client;
-    static String ip = "localhost";
+    static String ip = "192.168.137.126";
     static int tcpPort = 28000;
     static int udpPort = 28000;
 
