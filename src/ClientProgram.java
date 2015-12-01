@@ -32,10 +32,10 @@ public class ClientProgram extends Listener {
         System.out.println("Connected! The client program is now waiting for a packet.");
 
         while(!messageReceived) {
-            Thread.sleep(1000);
+            Thread.sleep(10000000);
         }
-        System.out.println("Client will now exit!");
-        System.exit(0);
+        //System.out.println("Client will now exit!");
+        //System.exit(0);
     }
 
     public void received(Connection c, Object p)    {

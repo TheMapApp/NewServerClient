@@ -11,6 +11,10 @@ public class ServerProgram extends Listener{
 
     static Server server;
 
+    int colorCode = 0;
+
+    int id;
+
     static int udpPort = 28000, tcpPort = 28000;
 
     public static void main(String[] args) throws Exception {
@@ -28,13 +32,32 @@ public class ServerProgram extends Listener{
         System.out.println("Server is operational!");
     }
 
+    public int getID () {
+        return id;
+    }
 
     public void connected(Connection c) {
-        System.out.println("Received a connection from"+c.getRemoteAddressTCP().getHostString());
+        System.out.println("Received a connection from " + c.getRemoteAddressTCP().getHostString());
         PacketMessage packetMessage = new PacketMessage();
-        packetMessage.message = "Hello mate! The time is: " +new Date().toString();
-
+        packetMessage.message = "Hello mate! The time is: " + new Date().toString();
         c.sendTCP(packetMessage);
+
+        for (int i = 0; i < c.getID(); i++) {
+            colorCode += 1;
+            if (colorCode == 1) {
+                c.getID();
+                System.out.println("Blue is applied to " + c.getRemoteAddressTCP().getHostString());
+            } else if (colorCode == 2) {
+                c.getID();
+                System.out.println("Green is applied to " + c.getRemoteAddressTCP().getHostString());
+            } else if (colorCode == 3) {
+                c.getID();
+                System.out.println("Red is applied to " + c.getRemoteAddressTCP().getHostString());
+            } else if (colorCode == 4) {
+                c.getID();
+                System.out.println("Schwarz is applied to " + c.getID());
+            }
+        }
     }
 
     public void received(Connection c, Object p) {
