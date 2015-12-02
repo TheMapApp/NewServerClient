@@ -22,7 +22,7 @@ public class ClientProgram extends Listener {
         client = new Client();
 
         client.getKryo().register(PacketMessage.class);
-        client.getKryo().register(PacketMessageTwo[].class);
+        //client.getKryo().register(PacketMessageTwo[].class);
         client.getKryo().register(int[].class);
 
         client.start();
@@ -44,12 +44,6 @@ public class ClientProgram extends Listener {
         if(p instanceof PacketMessage)  {
             PacketMessage packet = (PacketMessage) p;
             System.out.println("Received a message from the host: "+packet.message);
-            messageReceived = true;
-        }
-
-        if(p instanceof PacketMessageTwo)  {
-            PacketMessageTwo packetTwo = (PacketMessageTwo) p;
-            System.out.println("I received a message: "+packetTwo.resourceType);
             messageReceived = true;
         }
     }

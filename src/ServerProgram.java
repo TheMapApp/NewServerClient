@@ -10,11 +10,6 @@ import java.util.Date;
 
 public class ServerProgram extends Listener{
 
-    public static String temp;
-    public static int[] temptwo = new int[18];
-
-    public int[] resourceNumber = {2,3};
-
     static Server server;
 
     int colorCode = 0;
@@ -26,8 +21,7 @@ public class ServerProgram extends Listener{
         server = new Server();
 
         server.getKryo().register(PacketMessage.class);
-        server.getKryo().register(PacketMessageTwo.class);
-        server.getKryo().register(PacketMessageTwo[].class);
+        server.getKryo().register(ResourceArray.class);
 
         server.bind(tcpPort, udpPort);
 
@@ -43,18 +37,26 @@ public class ServerProgram extends Listener{
         PacketMessage packetMessage = new PacketMessage();
         PacketMessage colour = new PacketMessage();
 
-        PacketMessageTwo.shuffleArray(PacketMessageTwo.resourceType);
+        ResourceArray.shuffleArray(ResourceArray.resourceType);
+        ResourceArray.shuffleArray(ResourceArray.resourceNumber);
 
         packetMessage.message = "Hello mate! The time is: " +new Date().toString();
 
         c.sendTCP(packetMessage);
-        c.sendTCP(Arrays.toString(PacketMessageTwo.resourceType));
+        c.sendTCP(Arrays.toString(ResourceArray.resourceType));
+        c.sendTCP(Arrays.toString(ResourceArray.resourceNumber));
 
-        String sendTest = new String();
-        sendTest = Arrays.toString(PacketMessageTwo.resourceType);
+        String sendType;
+        sendType = Arrays.toString(ResourceArray.resourceType);
         PacketMessage arraySend = new PacketMessage();
-        arraySend.message = sendTest;
+        arraySend.message = sendType;
         c.sendTCP(arraySend);
+
+        String sendNumber;
+        sendNumber = Arrays.toString(ResourceArray.resourceNumber);
+        PacketMessage arraySend2 = new PacketMessage();
+        arraySend2.message = sendNumber;
+        c.sendTCP(arraySend2);
 
         for (int i = 0; i <= c.getID(); i++) {
             if (colorCode == 0) {
