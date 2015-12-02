@@ -5,9 +5,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class ServerProgram extends Listener{
+
+    public static String temp;
+    public static int[] temptwo = new int[18];
+
+    public int[] resourceNumber = {2,3};
 
     static Server server;
 
@@ -20,6 +26,8 @@ public class ServerProgram extends Listener{
         server = new Server();
 
         server.getKryo().register(PacketMessage.class);
+        server.getKryo().register(PacketMessageTwo.class);
+        server.getKryo().register(PacketMessageTwo[].class);
 
         server.bind(tcpPort, udpPort);
 
@@ -31,11 +39,22 @@ public class ServerProgram extends Listener{
     }
 
     public void connected(Connection c) {
-        System.out.println("Received a connection from " + c.getRemoteAddressTCP().getHostString());
+        System.out.println("Received a connection from"+c.getRemoteAddressTCP().getHostString());
         PacketMessage packetMessage = new PacketMessage();
-        packetMessage.message = "Hello mate! The time is: " + new Date().toString();
-        c.sendTCP(packetMessage);
         PacketMessage colour = new PacketMessage();
+
+        PacketMessageTwo.shuffleArray(PacketMessageTwo.resourceType);
+
+        packetMessage.message = "Hello mate! The time is: " +new Date().toString();
+
+        c.sendTCP(packetMessage);
+        c.sendTCP(Arrays.toString(PacketMessageTwo.resourceType));
+
+        String sendTest = new String();
+        sendTest = Arrays.toString(PacketMessageTwo.resourceType);
+        PacketMessage arraySend = new PacketMessage();
+        arraySend.message = sendTest;
+        c.sendTCP(arraySend);
 
         for (int i = 0; i <= c.getID(); i++) {
             if (colorCode == 0) {
