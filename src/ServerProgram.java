@@ -4,24 +4,38 @@
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 
 import java.util.Arrays;
 import java.util.Date;
 
 public class ServerProgram extends Listener{
-
+    public boolean firstJoin = true;
+    public int players = 0;
     static Server server;
 
-    int colorCode = 0;
+    static int udpPort = 54555, tcpPort = 54555;
 
-    static int udpPort = 28000, tcpPort = 28000;
+    public int turn = 1;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Creating the server!");
         server = new Server();
 
-        server.getKryo().register(PacketMessage.class);
-        server.getKryo().register(ResourceArray.class);
+        server.getKryo().register(HousePosX.class);
+        server.getKryo().register(HousePosY.class);
+        server.getKryo().register(RoadX1.class);
+        server.getKryo().register(RoadX2.class);
+        server.getKryo().register(RoadY1.class);
+        server.getKryo().register(RoadY2.class);
+        server.getKryo().register(PlayerColor.class);
+
+        //server.getKryo().register(PacketMessage.class);
+        server.getKryo().register(int[].class);
+        server.getKryo().register(Ressources.class);
+        server.getKryo().register(ResType.class);
+        server.getKryo().register(Turn.class);
+
 
         server.bind(tcpPort, udpPort);
 
@@ -34,18 +48,35 @@ public class ServerProgram extends Listener{
 
     public void connected(Connection c) {
         System.out.println("Received a connection from"+c.getRemoteAddressTCP().getHostString());
-        PacketMessage packetMessage = new PacketMessage();
-        PacketMessage colour = new PacketMessage();
+        players += 1;
+        System.out.println(players);
 
-        ResourceArray.shuffleArray(ResourceArray.resourceType);
-        ResourceArray.shuffleArray(ResourceArray.resourceNumber);
+        Log.set(Log.LEVEL_DEBUG);
+        Ressources res = new Ressources();
+        ResType resType = new ResType();
+        if(firstJoin){
+            ResourceArray.shuffleArray(ResourceArray.resourceNumber);
+            ResourceArray.shuffleArray(ResourceArray.resourceType);
+            firstJoin = false;
+        }
+        res.res = ResourceArray.resourceNumber;
+        resType.resType = ResourceArray.resourceType;
 
-        packetMessage.message = "Hello mate! The time is: " +new Date().toString();
 
-        c.sendTCP(packetMessage);
-        c.sendTCP(Arrays.toString(ResourceArray.resourceType));
-        c.sendTCP(Arrays.toString(ResourceArray.resourceNumber));
+        server.sendToTCP(c.getID(), res);
+        server.sendToTCP(c.getID(), resType);
+        //PLAYER COLOR
+        PlayerColor playerColor = new PlayerColor();
+        playerColor.color = c.getID();
+        server.sendToTCP(c.getID(), playerColor);
 
+        if(players == 3){
+            Turn tur = new Turn();
+            tur.turn = 1;
+            server.sendToTCP(1, tur);
+        }
+        //c.sendTCP(Arrays.toString(ResourceArray.resourceNumber));
+        /*
         String sendType;
         sendType = Arrays.toString(ResourceArray.resourceType);
         PacketMessage arraySend = new PacketMessage();
@@ -57,37 +88,45 @@ public class ServerProgram extends Listener{
         PacketMessage arraySend2 = new PacketMessage();
         arraySend2.message = sendNumber;
         c.sendTCP(arraySend2);
-
-        for (int i = 0; i <= c.getID(); i++) {
-            if (colorCode == 0) {
-                c.getID();
-                System.out.println("Blue is applied to " + c.getID());
-                colour.message = "Hi there, blue!";
-                c.sendTCP(colour);
-                colorCode += 1;
-            } else if (colorCode == 1) {
-                c.getID();
-                System.out.println("Green is applied to " + c.getID());
-                colour.message = "Hi there, green!";
-                c.sendTCP(colour);
-                colorCode += 1;
-            } else if (colorCode == 2) {
-                c.getID();
-                System.out.println("Red is applied to " + c.getID());
-                colour.message = "Hi there, red!";
-                c.sendTCP(colour);
-                colorCode += 1;
-            } else if (colorCode == 3) {
-                c.getID();
-                System.out.println("Black is applied to " + c.getID());
-                colour.message = "Hi there, black!";
-                c.sendTCP(colour);
-                colorCode += 1;
-            }
-        }
+        */
     }
 
     public void received(Connection c, Object p) {
+        if (p instanceof HousePosX) {
+            HousePosX var = new HousePosX();
+            var.x = c.getID();
+            System.out.println("Receieved x");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof HousePosY) {
+            System.out.println("Receieved y");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof RoadX1) {
+            System.out.println("Receieved y");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof RoadX2) {
+            System.out.println("Receieved y");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof RoadY1) {
+            System.out.println("Receieved y");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof RoadY2) {
+            System.out.println("Receieved y");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if(p instanceof Turn){
+            Turn tur = new Turn();
+            turn += 1;
+            if(turn > players){
+                turn = 1;
+            }
+            tur.turn = turn;
+            server.sendToAllTCP(tur);
+        }
     }
 
     public void disconnected(Connection c)  {
