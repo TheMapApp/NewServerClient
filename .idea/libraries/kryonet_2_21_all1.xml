@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="kryonet-2.21-all1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Settlers42/Settler-s_v42/jars/kryonet-2.21-all.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
