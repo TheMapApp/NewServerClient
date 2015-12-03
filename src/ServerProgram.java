@@ -67,7 +67,7 @@ public class ServerProgram extends Listener{
         server.sendToTCP(c.getID(), resType);
         //PLAYER COLOR
         PlayerColor playerColor = new PlayerColor();
-        playerColor.color = c.getID();
+        playerColor.playerColor = c.getID();
         server.sendToTCP(c.getID(), playerColor);
 
         if(players == 3){
