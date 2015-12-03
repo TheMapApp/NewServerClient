@@ -35,6 +35,10 @@ public class ServerProgram extends Listener{
         server.getKryo().register(Ressources.class);
         server.getKryo().register(ResType.class);
         server.getKryo().register(Turn.class);
+        server.getKryo().register(DiceRoll.class);
+
+        server.getKryo().register(TownX.class);
+        server.getKryo().register(TownY.class);
 
 
         server.bind(tcpPort, udpPort);
@@ -70,10 +74,13 @@ public class ServerProgram extends Listener{
         playerColor.playerColor = c.getID();
         server.sendToTCP(c.getID(), playerColor);
 
-        if(players == 3){
+        if(players == 2){
             Turn tur = new Turn();
             tur.turn = 1;
             server.sendToTCP(1, tur);
+            DiceRoll roll = new DiceRoll();
+            roll.dieRoll = Roll();
+            server.sendToAllTCP(roll);
         }
         //c.sendTCP(Arrays.toString(ResourceArray.resourceNumber));
         /*
@@ -126,10 +133,53 @@ public class ServerProgram extends Listener{
             }
             tur.turn = turn;
             server.sendToAllTCP(tur);
+            DiceRoll roll = new DiceRoll();
+            roll.dieRoll = Roll();
+            server.sendToAllTCP(roll);
+        }
+        if (p instanceof TownX) {
+            System.out.println("Receieved TownX");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof TownY) {
+            System.out.println("Receieved TownY");
+            server.sendToAllExceptTCP(c.getID(), p);
         }
     }
 
     public void disconnected(Connection c)  {
         System.out.println("A client disconnected");
+    }
+
+    public int Roll(){ //method needed to roll the dice in the game
+
+		/*in this method the dice will be rolled
+		 * So the point is to create a method that allows for two dice to be rolled
+		 * Each die gets a number from 1 to 6. These values have to be random.
+		 * Afterwards, these two values will be added together, creating a sum.
+		 * The sum will be the result of the dice per roll.
+		 * Two dice with values from 1 to 6 are used in order to be sure that once added, 7 will be the most common number (a function of the game)
+		*/
+
+        int die1, die2; //two dice variables are created
+
+		/*generating a random number:
+		 * randomNum = minimum + (int)(Math.random()*maximum);
+		 * Here, the minimum is 1 and the maximum is 6
+		 */
+
+        die1 = 1 + (int)(Math.random()*6);
+        die2 = 1 + (int)(Math.random()*6);
+
+        int sum = die1 + die2;
+        //adding the random value from die1 to the random value of die2
+        //integers are used because dice are whole numbers
+        //the sum can be any number between 2 and 12
+
+        System.out.println(sum);
+
+        return sum;
+
+
     }
 }
