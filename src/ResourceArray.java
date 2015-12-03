@@ -6,12 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class ResourceArray {
 
-    //public int[] massage;
+    //This class will assign an array of resource numbers and types with the length of 20 and 19. The shuffleArray will shuffle the numbers correspondingly so that the ServerProgram will
+    //be able to send the grid information of the hexagon to the clients in order to create the resources and numbers.
     public static int[] resourceType = { 1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5 };
     public static int[] resourceNumber = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
 
     public static int[] shuffleArray(int[] ar){
-        // If running on Java 6 or older, use `new Random()` on RHS here
         Random rnd = ThreadLocalRandom.current();
         for (int i = ar.length - 1; i > 0; i--)
         {
