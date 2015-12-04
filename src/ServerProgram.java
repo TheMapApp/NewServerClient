@@ -6,6 +6,9 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
+import java.util.Arrays;
+import java.util.Date;
+
 public class ServerProgram extends Listener{
     public boolean firstJoin = true;
     public int players = 0;
@@ -30,10 +33,17 @@ public class ServerProgram extends Listener{
         server.getKryo().register(RoadY1.class);
         server.getKryo().register(RoadY2.class);
         server.getKryo().register(PlayerColor.class);
+
+        //server.getKryo().register(PacketMessage.class);
         server.getKryo().register(int[].class);
         server.getKryo().register(Ressources.class);
         server.getKryo().register(ResType.class);
         server.getKryo().register(Turn.class);
+        server.getKryo().register(DiceRoll.class);
+
+        server.getKryo().register(TownX.class);
+        server.getKryo().register(TownY.class);
+
 
         //Binding the server to a specific TCP and UDP port, which is initialized at the top (static int udpPort = 54555, tcpPort = 54555)
         server.bind(tcpPort, udpPort);
@@ -51,45 +61,43 @@ public class ServerProgram extends Listener{
     //This void contains all the actions that the server will do whenever a client connects to the servers IP. It initially sends a confirmation message
     public void connected(Connection c) {
         System.out.println("Received a connection from"+c.getRemoteAddressTCP().getHostString());
-
         //players += 1; will add the number of clients connected in order to store an overview of the amount of players.
         players += 1;
         System.out.println(players);
 
         //This log was initially used to debug why the resourceNumber weren't send, although the resourceNumber was sent
         Log.set(Log.LEVEL_DEBUG);
-
         //Creating the new resources and resource-types in order to send them to the client.
         Ressources res = new Ressources();
         ResType resType = new ResType();
-
         //When the first player joins, the resource numbers and types will be shuffled in order to create a random map and distribute the numbers randomly.
         if(firstJoin){
             ResourceArray.shuffleArray(ResourceArray.resourceNumber);
             ResourceArray.shuffleArray(ResourceArray.resourceType);
             firstJoin = false;
         }
-
         //Preparing the packets in order to be sent
         res.res = ResourceArray.resourceNumber;
         resType.resType = ResourceArray.resourceType;
 
+
         //Sending the packets containing the resource number and the resource type to the client
         server.sendToTCP(c.getID(), res);
         server.sendToTCP(c.getID(), resType);
-
         //Creating playercolors based on the c.getID(), so that they will have different colors for each player.
         PlayerColor playerColor = new PlayerColor();
         playerColor.playerColor = c.getID();
-
         //Sending/assigning the colour to the player.
         server.sendToTCP(c.getID(), playerColor);
 
         //This will start the game if there is a specific amount of players, in this case #. Afterwards, in the Turn tur = new Turn();, the server will give the first turn to the first player/client that connected to the server.
-        if(players == 3){
+        if(players == 2){
             Turn tur = new Turn();
             tur.turn = 1;
             server.sendToTCP(1, tur);
+            DiceRoll roll = new DiceRoll();
+            roll.dieRoll = Roll();
+            server.sendToAllTCP(roll);
         }
     }
 
@@ -130,11 +138,54 @@ public class ServerProgram extends Listener{
             }
             tur.turn = turn;
             server.sendToAllTCP(tur);
+            DiceRoll roll = new DiceRoll();
+            roll.dieRoll = Roll();
+            server.sendToAllTCP(roll);
+        }
+        if (p instanceof TownX) {
+            System.out.println("Receieved TownX");
+            server.sendToAllExceptTCP(c.getID(), p);
+        }
+        if (p instanceof TownY) {
+            System.out.println("Receieved TownY");
+            server.sendToAllExceptTCP(c.getID(), p);
         }
     }
 
     //This void will print the corresponding line of code if a client loses connection or disconnects.
     public void disconnected(Connection c)  {
         System.out.println("A client disconnected");
+    }
+
+    public int Roll(){ //method needed to roll the dice in the game
+
+		/*in this method the dice will be rolled
+		 * So the point is to create a method that allows for two dice to be rolled
+		 * Each die gets a number from 1 to 6. These values have to be random.
+		 * Afterwards, these two values will be added together, creating a sum.
+		 * The sum will be the result of the dice per roll.
+		 * Two dice with values from 1 to 6 are used in order to be sure that once added, 7 will be the most common number (a function of the game)
+		*/
+
+        int die1, die2; //two dice variables are created
+
+		/*generating a random number:
+		 * randomNum = minimum + (int)(Math.random()*maximum);
+		 * Here, the minimum is 1 and the maximum is 6
+		 */
+
+        die1 = 1 + (int)(Math.random()*6);
+        die2 = 1 + (int)(Math.random()*6);
+
+        int sum = die1 + die2;
+        //adding the random value from die1 to the random value of die2
+        //integers are used because dice are whole numbers
+        //the sum can be any number between 2 and 12
+
+        System.out.println(sum);
+
+        return sum;
+
+
     }
 }
