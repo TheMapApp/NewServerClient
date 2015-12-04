@@ -9,6 +9,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="library" name="kryonet-2.21-all" level="project" />
-    <orderEntry type="library" name="kryonet-2.21-all1" level="project" />
   </component>
 </module>

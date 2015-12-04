@@ -102,32 +102,32 @@ public class ServerProgram extends Listener{
     }
 
     //The following void received will send the following positions of the houses, roads and the turn as well to the corresponding other clients.
-    public void received(Connection c, Object p) {
-        if (p instanceof HousePosX) {
+    public void received(Connection c, Object p) { // A function that gets called when something is received
+        if (p instanceof HousePosX) { //If it is the x position for the house
             HousePosX var = new HousePosX();
             var.x = c.getID();
             System.out.println("Receieved x");
-            server.sendToAllExceptTCP(c.getID(), p);
+            server.sendToAllExceptTCP(c.getID(), p); // Send that position to all clients
         }
-        if (p instanceof HousePosY) {
+        if (p instanceof HousePosY) { //If it is the y position for the house
             System.out.println("Receieved y");
-            server.sendToAllExceptTCP(c.getID(), p);
+            server.sendToAllExceptTCP(c.getID(), p); // Send that position to all clients
         }
-        if (p instanceof RoadX1) {
+        if (p instanceof RoadX1) { //If it is the first x position for the of the road
             System.out.println("Receieved y");
-            server.sendToAllExceptTCP(c.getID(), p);
+            server.sendToAllExceptTCP(c.getID(), p); // Send that position to all clients
         }
-        if (p instanceof RoadX2) {
+        if (p instanceof RoadX2) { //If it is the second x position for the of the road
             System.out.println("Receieved y");
-            server.sendToAllExceptTCP(c.getID(), p);
+            server.sendToAllExceptTCP(c.getID(), p); // Send that position to all clients
         }
-        if (p instanceof RoadY1) {
+        if (p instanceof RoadY1) { //If it is the first y position for the of the road
             System.out.println("Receieved y");
-            server.sendToAllExceptTCP(c.getID(), p);
+            server.sendToAllExceptTCP(c.getID(), p); // Send that position to all clients
         }
-        if (p instanceof RoadY2) {
+        if (p instanceof RoadY2) { //If it is the second x position for the of the road
             System.out.println("Receieved y");
-            server.sendToAllExceptTCP(c.getID(), p);
+            server.sendToAllExceptTCP(c.getID(), p); // Send that position to all clients
         }
         //This if-statement assigns the next players/clients turn.
         if(p instanceof Turn){
